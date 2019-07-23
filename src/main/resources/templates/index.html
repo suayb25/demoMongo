@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Modern Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+ <!-- Bootstrap Core CSS -->
+<link href="cssNew/bootstrap.min.css" rel='stylesheet' type='text/css' />
+<!-- Custom CSS -->
+<link href="cssNew/style.css" rel='stylesheet' type='text/css' />
+<!-- Graph CSS -->
+<link href="cssNew/lines.css" rel='stylesheet' type='text/css' />
+<link href="cssNew/font-awesome.css" rel="stylesheet"> 
+<!-- jQuery -->
+<script src="js/jquery.min.js"></script>
+<!----webfonts--->
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'>
+<!---//webfonts--->  
+<!-- Nav CSS -->
+<link href="cssNew/custom.css" rel="stylesheet">
+<!-- Metis Menu Plugin JavaScript -->
+<script src="js/metisMenu.min.js"></script>
+<script src="js/custom.js"></script>
+<!-- Graph JavaScript -->
+<script src="js/d3.v3.js"></script>
+<script src="js/rickshaw.js"></script>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+		.card {
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			max-width: 300px;
+			margin: auto;
+			text-align: center;
+			font-family: arial;
+		}
+
+		.title {
+			color: grey;
+			font-size: 18px;
+		}
+
+		button {
+			border: none;
+			outline: 0;
+			display: inline-block;
+			padding: 8px;
+			color: white;
+			background-color: #000;
+			text-align: center;
+			cursor: pointer;
+			font-size: 18px;
+		}
+
+		a {
+			text-decoration: none;
+			font-size: 22px;
+			color: black;
+		}
+
+		button:hover, a:hover {
+			opacity: 0.7;
+		}
+	</style>
+
+
+
+
+</head>
+<body>
+<div id="wrapper">
+     <!-- Navigation -->
+        <nav class="top1 navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Hotel Management</a>
+            </div>
+            <!-- /.navbar-header -->
+            <ul class="nav navbar-nav navbar-right">
+			    <li class="dropdown">
+	        		<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown"><img src="images/1.png"></a>
+	        		<ul class="dropdown-menu" >
+						<li class="dropdown-menu-header text-center">
+							<strong>Account</strong>
+						</li>
+						<li class="m_2"><form action="#" th:object="${loginUser}" th:action="@{'/profile'}" method="post"> <button style="width:100%" type="submit" ><i class="fa fa-user"></i> Profile</button></form>    </li>
+						<li class="m_2"><a href="#"><i class="fa fa-wrench"></i> Settings</a></li>
+						<li class="divider"></li>
+						<li class="m_2"><a href="#"><i class="fa fa-shield"></i> Lock Profile</a></li>
+						<li class="m_2"><form action="#" th:action="@{'/logout'}" method="post"><button style="width:100%" type="submit" >  <i class="fa fa-lock"></i> Logout</button></form></li>
+	        		</ul>
+	      		</li>
+			</ul>
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a th:object="${loginUser}"  th:href="'/profile/'+ ${loginUser.userName}"><i class="fa fa-indent nav_icon"></i>My Profile</a>
+
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-table nav_icon"></i>Users</a>
+                            <!-- /.nav-second-level -->
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <div id="page-wrapper">
+        <div class="graphs">
+
+    <div class="content_bottom">
+     <div class="col-md-8 span_3">
+		  <div class="bs-example1" data-example-id="contextual-table">
+		    <table class="table">
+		      <thead>
+		        <tr>
+		          <th>#</th>
+		          <th>Kullanıcı Adı</th>
+		          <th>Adı</th>
+		          <th>Soyadı</th>
+					<th>Telefon</th>
+		        </tr>
+		      </thead>
+		      <tbody th:each="user, rowStat: ${userList}"  >
+		        <tr >
+					<td/>
+					<td><a th:name="username" th:text="${user.userName}"  data-target="#card" data-toggle="modal" th:attrappend="data-target=${user.userId}"> </a> </td>
+					<td th:text="${user.name}"/>
+					<td th:text="${user.surname}"/>
+					<td th:text="${user.phoneNumber}"/>
+					<div class="modal fade" id="card" role="dialog" th:attrappend="id=${user.userId}">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button class="close" data-dismiss="modal" type="button">&times;</button>
+							<!-- <h4 class="modal-title">User Delete</h4> -->
+						</div>
+						<h2 style="text-align:center">User Profile Card</h2>
+
+						<div class="card">
+							<img src="/images_profile/woman.jpg" alt="John" style="width:100%">
+							<h1  th:text="${user.name}"></h1>
+							<p class="title" th:text="${user.userName}"></p>
+							<p th:text="${user.name}"></p>
+							<div style="margin: 24px 0;" >
+								<a href="#"><i class="fa fa-dribbble"></i></a>
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-linkedin"></i></a>
+								<a href="#"><i class="fa fa-facebook"></i></a>
+							</div>
+							<p><button>Contact</button></p>
+						</div>
+					</div>
+
+					</div>
+
+
+
+		        </tr>
+		      </tbody>
+		    </table>
+		   </div>
+	   </div>
+		<div class="clearfix"> </div>
+	    </div>
+
+
+		<div class="copy">
+            <p>Copyright &copy; 2019 Modern. All Rights Reserved | Design by <a href="https://github.com/suayb25" target="_blank">Şuayb Talha</a> </p>
+	    </div>
+		</div>
+       </div>
+      <!-- /#page-wrapper -->
+   </div>
+    <!-- /#wrapper -->
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+<!-- <script type="text/javascript">
+	function preventBack() {window.history.forward();}
+	setTimeout("preventBack()", 0);
+	window.onunload = function () {null};
+</script> -->
+
+</body>
+</html>

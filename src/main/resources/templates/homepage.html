@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Booking Form HTML Template</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+<style>
+    #container {
+        width: 5%;
+        /*border-radius: 25px;*/
+        border: 2px solid Black;
+        padding: 15px 15px 15px 15px;
+        margin: 0px 20px 20px 20px;
+        background: #A4D3EE;
+        overflow: visible;
+        box-shadow: 5px 5px 2px #888888;
+        position: relative;
+    }
+</style>
+</head>
+
+<body >
+<div id="booking" class="section">
+    <div id="container">
+        <form id="x">
+            <input type="button" value="<<--" onclick="  history.go(0);">
+        </form>
+    </div>
+    <div class="section-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7 col-md-push-5">
+                    <div class="booking-cta">
+                        <h1>Hotel Managemnt</h1>
+                        <p>Enjoy your vacation, Welcome to our world</p>
+
+                    </div>
+                </div>
+                <div class="col-md-4 col-md-pull-7">
+                    <div class="booking-form">
+                        <form action="#" method="post" name="ReservationForm" role="form" th:action="@{/login}">
+                            <div class="form-group">
+                                <span class="form-label">Username</span>
+                                <input class="form-control" type="text" name="username" placeholder="Enter your username" required minlength="2">
+                            </div>
+                            <div class="form-group">
+                                <span class="form-label">Password</span>
+                                <input class="form-control" type="password" name="password" placeholder="Enter your password" required minlength="8">
+                            </div>
+                            <div class="form-btn">
+                                <button class="submit-btn">Login</button>
+                                <a href="/registerPage">Register</a>
+                                <p id="demo" th:object="${wrong}" th:text="${wrong}"></p>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

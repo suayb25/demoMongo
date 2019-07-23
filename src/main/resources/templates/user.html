@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User System</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script async defer src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+
+        function validateForm() {
+            var recaptcha = document.forms["AddForm"]["g-recaptcha-response"].value;
+            if (recaptcha == "") {
+                alert("Please fill reCAPTCHA");
+                return false;
+            }
+        }
+
+        function validateForm1() {
+            var recaptcha = document.forms["EditForm"]["g-recaptcha-response"].value;
+            if (recaptcha == "") {
+                alert("Please fill reCAPTCHA");
+                return false;
+            }
+        }
+
+    </script>
+
+</head>
+<body background="user.jpg">
+<div class="container">
+    <h1 style="margin-bottom: 35px;">Kullanıcı Listesi</h1>
+    <div class="row col-md-9 table-responsive">
+        <table class="table" id="user-table">
+            <thead>
+            <tr>
+                <th style="border:2px red solid;"><font size="5">Kullanıcı Adı</font></th>
+                <th style="border:2px red solid;"><font size="5">Adı</font></th>
+                <th style="border:2px red solid;"><font size="5">Soyadı</font></th>
+                <th style="border:2px red solid;"><font size="5">Telefon Numarası</font></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user, rowStat: ${userList}"
+                th:style="${rowStat.odd} ? 'color: darkslategray' : 'color: black;'">
+                <td style="font-size: 33px;border:2px red solid;" th:text="${user.userName}"/>
+                <td style="font-size: 33px;border:2px red solid;" th:text="${user.name}"/>
+                <td style="font-size: 33px;border:2px red solid;" th:text="${user.surname}"/>
+                <td style="font-size: 33px;border:2px red solid;" th:text="${user.phoneNumber}"/>
+                <td>
+                    <div class="container">
+                        <button class="btn btn-info btn-lg" data-target="#Enes1" data-toggle="modal" th:attrappend="data-target=@{${user.userId} + 'edit'}"  onsubmit="return validateForm1()"
+                                type="button">Edit
+                        </button>
+                        <button class="btn btn-info btn-lg" data-target="#Enes" data-toggle="modal" th:attrappend="data-target=${user.userId}"
+                                type="button">Delete
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="Enes" role="dialog" th:attrappend="id=${user.userId}">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button class="close" data-dismiss="modal" type="button">&times;</button>
+                                        <!-- <h4 class="modal-title">User Delete</h4> -->
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure to want to delete user?</p>
+                                        <p th:text="${user.name}"></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-default" data-dismiss="modal" type="button">Close
+                                        </button>
+
+                                        <a th:href="@{'/delete/' + ${user.userId}}">Delete</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal fade" id="Enes1" role="dialog" th:attrappend="id=@{${user.userId} + 'edit'}">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button class="close" data-dismiss="modal" type="button">&times;</button>
+                                        <!-- <h4 class="modal-title">User Delete</h4> -->
+                                    </div>
+                                    <div class="modal-body">
+                                        <p th:text="'Are you sure want to edit ' + ${user.name} + ' ?'"></p>
+                                        <form action="#" method="post" name="EditForm" onsubmit="return validateForm1()"
+                                              role="form" th:action="@{/edit}" th:object="${user}">
+                                            <div class="form-group">
+                                                <label >UserId</label>
+                                              <input class="form-control" readonly th:field="*{userName}" th:text="*{userId}" type="text"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Username</label>
+                                                <input class="form-control" readonly th:field="*{userName}" th:text="${user.userName}" type="text"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputName">Name</label>
+                                                <input class="form-control" id="inputName" minlength="2"
+                                                       required th:field="*{name}" th:placeholder="${user.name}"
+                                                       type="text"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputEmail">Surname</label>
+                                                <input class="form-control" id="inputEmail" minlength="2"
+                                                       required th:field="*{surname}"
+                                                       th:placeholder="${user.surname}" type="text"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputMessage">PhoneNumber</label>
+                                                <input class="form-control" id="inputMessage" minlength="8"
+                                                       required th:field="*{phoneNumber}"
+                                                       th:placeholder="${user.phoneNumber}" type="number"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="roleEdit">Role</label>
+                                                <input class="form-control" id="roleEdit" name="role"
+                                                       placeholder="Enter a phone number" required  min="0" max="1" th:field="*{role}"
+                                                       type="number"/>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-default" data-dismiss="modal" type="button">
+                                                    Close
+                                                </button>
+
+                                                <button type="submit">Save</button>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <button class="btn btn-info btn-lg" data-target="#new" data-toggle="modal" style="margin-bottom: 65px;"
+                type="button">Add New User
+        </button>
+        <div class="modal fade" id="new" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal" type="button">&times;</button>
+                        <!-- <h4 class="modal-title">User Delete</h4> -->
+                    </div>
+                    <div class="modal-body">
+                        <p>Add New User</p>
+                        <form action="#" method="post" name="AddForm" onsubmit="return validateForm()" role="form"
+                              th:action="@{/save}" th:object="${user}">
+
+                            <div class="form-group">
+                                <label for="inputUsername">Username</label>
+                                <input class="form-control" id="inputUsername" minlength="2" name="username"
+                                       placeholder="Enter a username" required th:field="*{userName}" type="text"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName1">Name</label>
+                                <input class="form-control" id="inputName1" minlength="2" name="name" placeholder="Enter a name"
+                                       required th:field="*{name}" type="text"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail1">Surname</label>
+                                <input class="form-control" id="inputEmail1" minlength="2" name="surname"
+                                       placeholder="Enter a surname" required th:field="*{surname}" type="text"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputMessage1">PhoneNumber</label>
+                                <input class="form-control" id="inputMessage1" minlength="8" name="phoneNumber"
+                                       placeholder="Enter a phone number" required th:field="*{phoneNumber}"
+                                       type="number"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="role">Role</label>
+                                <input class="form-control" id="role" name="role"
+                                       placeholder="Enter a phone number" required  min="0" max="1" th:field="*{role}"
+                                       type="number"/>
+                            </div>
+                            <div class="form-group">
+                                <div class="g-recaptcha" data-sitekey="6LdyJq4UAAAAAEGnoVdkK5KJgq5mu2mo9e7c2rbh">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+
+                                <button type="submit">Add</button>
+
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
