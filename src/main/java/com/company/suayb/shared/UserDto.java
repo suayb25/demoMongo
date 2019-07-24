@@ -11,7 +11,11 @@ public class UserDto implements Serializable {
     private String surname;
     private String phoneNumber;
     private String password;
+    private String sex;
     private int role;
+    private int age;
+    private String momsSurname;
+    private String education;
 
     public String getUserId() {
         return userId;
@@ -67,5 +71,37 @@ public class UserDto implements Serializable {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+    public String getMomsSurname() {
+        return momsSurname;
+    }
+
+    public void setMomsSurname(String momsSurname) {
+        this.momsSurname = momsSurname;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
     }
 }

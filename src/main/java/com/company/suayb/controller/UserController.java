@@ -34,6 +34,7 @@ public class UserController {
 
     User loginUser=new User();
     boolean login=false;
+    User loginAdmin=new User();
 
     @RequestMapping("/")
     public String findAllUsers(Model model) {
@@ -45,6 +46,7 @@ public class UserController {
         user.setPhoneNumber("");
         user.setUserName("");
         model.addAttribute("user", user);
+        model.addAttribute("loginAdmin",loginAdmin);
         return "user";
     }
 
@@ -73,6 +75,15 @@ public class UserController {
         return "redirect:/";
     }
 
+    @PostMapping(value = "/saveUser")
+    public String saveGuestUser(@Valid @ModelAttribute("user") UserDto userDto,Model m) {
+
+        userService.save(userDto);
+        m.addAttribute("loginUser",loginUser);
+        m.addAttribute("userList", userService.findAll());
+    return "index";
+    }
+
     @PostMapping(value = "/edit")
     public String editUser(@Valid @ModelAttribute("user") UserDto userDto) {
         ModelMapper modelMapper=new ModelMapper();
@@ -84,6 +95,7 @@ public class UserController {
 
         return "redirect:/";
     }
+
 
 
     @RequestMapping("/Delete/{id}")
@@ -110,25 +122,34 @@ public class UserController {
     public String homepage(@RequestParam("username") String username,@RequestParam("password") String password,Model m) {
         if(userService.findByUsername(username)!=null){
             User user =userService.findByUsername(username);
-            if(user.getPassword().equals(getSHA(password))){
-                if(user.getRole()==0){
-                    login=true;
-                    loginUser=user;
-                    ModelMapper modelMapper=new ModelMapper();
-                    modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-                    UserDto userDto= modelMapper.map(user,UserDto.class);
-                    m.addAttribute("loginUser",user);
-                    m.addAttribute("userList", userService.findAll());
-                    userService.save(userDto);//login status true
-                    return "index";
-                }else{
-                    return "redirect:/";
-                }
 
+            if(user.getPassword()!=null){
+                if(user.getPassword().equals(getSHA(password))){
+                    if(user.getRole()==0){
+                        login=true;
+                        loginUser=user;
+                        ModelMapper modelMapper=new ModelMapper();
+                        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+                        UserDto userDto= modelMapper.map(user,UserDto.class);
+                        m.addAttribute("loginUser",user);
+                        m.addAttribute("userList", userService.findAll());
+                        userService.save(userDto);//login status true
+                        return "index";
+                    }else{
+                        login=true;
+                        loginAdmin=user;
+                        return "redirect:/";
+                    }
+                }else{
+                    m.addAttribute("wrong","Your password is wrong");
+                    return "homepage" ;
+                }
             }else{
-                m.addAttribute("wrong","Your password is wrong");
+                m.addAttribute("wrong","You have to register!");
                 return "homepage" ;
             }
+
+
         }else{
             boolean k=true;
             List<User> users = userService.findAll();
@@ -143,9 +164,6 @@ public class UserController {
                 m.addAttribute("wrong","Your login information is wrong");
                 return "homepage" ;
             }
-
-
-
         }
     }
 
@@ -155,25 +173,37 @@ public class UserController {
         return "register";
     }
     @PostMapping("/register")
-    public String register(String username,String password,String confirm,Model m) {
-    if(userService.findByUsername(username)!=null){
-         User userDetail = userService.findByUsername(username);
-    if(userDetail.getPhoneNumber()!=null){
-        userDetail.setPassword(getSHA(password));
-        System.out.println("\n" + password + " : " + userDetail.getPassword());
-        ModelMapper modelMapper=new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UserDto userDto= modelMapper.map(userDetail,UserDto.class);
-        userService.save(userDto);
-        return "homepage";
-             }else{
-            m.addAttribute("wrong","You have already an account");
-              return "register";
-             }
+    public String register(String username,String password,String confirm,String oldsurname,Model m) {
+
+        if(password.equals(confirm)){
+            if(userService.findByUsername(username)!=null){
+                User userDetail = userService.findByUsername(username);
+                if(userDetail.getPassword()==null){
+                    if(userDetail.getMomsSurname().equals(oldsurname)){
+                        userDetail.setPassword(getSHA(password));
+                        System.out.println("\n" + password + " : " + userDetail.getPassword());
+                        ModelMapper modelMapper=new ModelMapper();
+                        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+                        UserDto userDto= modelMapper.map(userDetail,UserDto.class);
+                        userService.save(userDto);
+                        return "homepage";
+                    }else {
+                        m.addAttribute("wrong", "Your informations is wrong!");
+                        return "register";
+                    }
+
+                }else{
+                    m.addAttribute("wrong","You have to an account");
+                    return "register";
+                }
             }else{
-             m.addAttribute("wrong","There is no username like you entered");
-                 return "register";
+                m.addAttribute("wrong","There is no username like you entered");
+                return "register";
             }
+        }else{
+            m.addAttribute("wrong","Your passwords are not matching!");
+            return "register";
+        }
 
     }
 
@@ -226,5 +256,4 @@ public class UserController {
         }
         return "homepage";
     }
-
 }

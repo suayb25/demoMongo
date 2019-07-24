@@ -33,6 +33,14 @@ public class User {
 
     private int role;
 
+    private int age;
+
+    private String education;
+
+    private String sex;
+
+    private String momsSurname;
+
     public String getUserId() {
         return userId;
     }
@@ -87,5 +95,37 @@ public class User {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getMomsSurname() {
+        return momsSurname;
+    }
+
+    public void setMomsSurname(String momsSurname) {
+        this.momsSurname = momsSurname;
     }
 }

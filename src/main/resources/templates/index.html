@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Admin Panel</title>
+<title>Visitor Panel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Modern Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
@@ -32,7 +32,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<style>
 		.card {
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-			max-width: 300px;
+			max-width: 350px;
+			margin: auto;
+			text-align: center;
+			font-family: arial;
+		}
+		.cardProfile{
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			max-width: 450px;
 			margin: auto;
 			text-align: center;
 			font-family: arial;
@@ -66,9 +73,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		}
 	</style>
 
-
-
-
 </head>
 <body>
 <div id="wrapper">
@@ -91,7 +95,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<li class="dropdown-menu-header text-center">
 							<strong>Account</strong>
 						</li>
-						<li class="m_2"><form action="#" th:object="${loginUser}" th:action="@{'/profile'}" method="post"> <button style="width:100%" type="submit" ><i class="fa fa-user"></i> Profile</button></form>    </li>
+						<li class="m_2"> <button style="width:100%" type="submit" th:object="${loginUser}" data-target="#cardProfile" data-toggle="modal" th:attrappend="data-target=${loginUser.userId}" ><i class="fa fa-user"></i> Profile</button>    </li>
 						<li class="m_2"><a href="#"><i class="fa fa-wrench"></i> Settings</a></li>
 						<li class="divider"></li>
 						<li class="m_2"><a href="#"><i class="fa fa-shield"></i> Lock Profile</a></li>
@@ -139,6 +143,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<td th:text="${user.name}"/>
 					<td th:text="${user.surname}"/>
 					<td th:text="${user.phoneNumber}"/>
+
 					<div class="modal fade" id="card" role="dialog" th:attrappend="id=${user.userId}">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -163,14 +168,89 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					</div>
 
 					</div>
-
-
-
 		        </tr>
 		      </tbody>
 		    </table>
 		   </div>
 	   </div>
+		<div class="modal fade" id="cardProfile" role="dialog" th:attrappend="id=${loginUser.userId}">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal" type="button">&times;</button>
+					<!-- <h4 class="modal-title">User Delete</h4> -->
+				</div>
+				<h2 style="text-align:center">User Profile Card</h2>
+
+				<div class="cardProfile" th:object="${loginUser}">
+					<img src="/images_profile/woman.jpg" alt="John" >
+					<h1  th:text="${loginUser.name}"></h1>
+					<div align="center">
+						<form action="#" th:action="@{/saveUser}" th:object="${loginUser}" method="post">
+							<table border="0" cellpadding="10">
+								<tr style="display:none;">
+									<td>Id: </td>
+									<td><input type="text" th:field="*{userId}" readonly="readonly"  /></td>
+								</tr>
+								<tr>
+									<td>UserName: </td>
+									<td><input type="text" th:field="*{userName}" readonly="readonly" /></td>
+								</tr>
+								<tr style="display:none;">
+									<td>Password: </td>
+									<td><input type="text" th:field="*{password}"  /></td>
+								</tr>
+								<tr style="display:none;">
+									<td>Mom's oldsurname: </td>
+									<td><input type="text" th:field="*{momsSurname}"  /></td>
+								</tr>
+								<tr>
+									<td>Name: </td>
+									<td><input type="text" th:field="*{name}"  /></td>
+								</tr>
+								<tr>
+									<td>Surname: </td>
+									<td><input type="text" th:field="*{surname}"  /></td>
+								</tr>
+								<tr>
+									<td> PhoneNumber: </td>
+									<td><input type="text" th:field="*{phoneNumber}" /></td>
+								</tr>
+								<tr>
+									<td> Age: </td>
+									<td><input type="text" th:field="*{age}" /></td>
+								</tr>
+								<tr style="display:none;">
+									<td> Role: </td>
+									<td><input type="text" th:field="*{role}" /></td>
+								</tr>
+								<tr>
+									<td> Education: </td>
+									<td><input type="text" th:field="*{education}" /></td>
+								</tr>
+								<tr>
+									<td> Sex: </td>
+									<td>
+									<select style="width: 100%" id = "selColor" path="departmentname" th:field="*{sex}">
+										<option value = "Erkek">Erkek</option>
+										<option value = "Kadın">Kadın</option>
+										<option value = "Diğer">Diğer</option>
+									</select>
+									</td>
+								</tr>
+
+								<tr align="center">
+									<td colspan="2"><button type="submit">Save</button></td>
+								</tr>
+
+							</table>
+
+						</form>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
 		<div class="clearfix"> </div>
 	    </div>
 
@@ -181,16 +261,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		</div>
        </div>
       <!-- /#page-wrapper -->
+
    </div>
     <!-- /#wrapper -->
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-<!-- <script type="text/javascript">
-	function preventBack() {window.history.forward();}
+<script type="text/javascript">
+	function preventBack() { window.history.forward(); }
 	setTimeout("preventBack()", 0);
-	window.onunload = function () {null};
-</script> -->
+	window.onunload = function () { null };
+</script>
 
 </body>
 </html>

@@ -32,6 +32,7 @@
 </head>
 <body background="user.jpg">
 <div class="container">
+    <p  style="float:right;margin-top: 35px;font-size: 22px;" th:object="${loginAdmin}" th:text="'Admin Username: ' + ${loginAdmin.userName}"></p>
     <h1 style="margin-bottom: 35px;">Kullanıcı Listesi</h1>
     <div class="row col-md-9 table-responsive">
         <table class="table" id="user-table">
@@ -147,6 +148,7 @@
         </table>
 
 
+
         <button class="btn btn-info btn-lg" data-target="#new" data-toggle="modal" style="margin-bottom: 65px;"
                 type="button">Add New User
         </button>
@@ -192,6 +194,12 @@
                                        type="number"/>
                             </div>
                             <div class="form-group">
+                                <label for="role">Mom's oldsurname</label>
+                                <input class="form-control" id="daughter" name="role"
+                                       placeholder="Enter Mom's oldsurname" required th:field="*{momsSurname}"  minlength="2"
+                                       type="text"/>
+                            </div>
+                            <div class="form-group">
                                 <div class="g-recaptcha" data-sitekey="6LdyJq4UAAAAAEGnoVdkK5KJgq5mu2mo9e7c2rbh">
                                 </div>
                             </div>
@@ -199,7 +207,6 @@
                                 <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
 
                                 <button type="submit">Add</button>
-
                             </div>
                         </form>
 
@@ -213,5 +220,10 @@
     </div>
 
 </div>
+<script type="text/javascript">
+    function preventBack() { window.history.forward(); }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+</script>
 </body>
 </html>
