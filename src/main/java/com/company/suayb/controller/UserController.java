@@ -60,19 +60,30 @@ public class UserController {
         user2.setUserName("");
         model.addAttribute("user", user2);
         model.addAttribute("userList", userService.findAll());
-        return "user";
+        return "redirect:/";
     }
 
     @PostMapping(value = "/save")
-    public String saveUser(@Valid @ModelAttribute("user") UserDto userDto) {
+    public String saveUser(@Valid @ModelAttribute("user") UserDto userDto,Model m) {
     /*,@RequestParam(name = "g-recaptcha-response") String captchaResponse
         String url = "https://www.google.com/recaptcha/api/siteverify";
         String params = "?secret=6LdyJq4UAAAAALbJwOdZFSjDt7F4Yt-gsaTMo8t-&response=" + captchaResponse;
         ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url + params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();*/
-
-            userService.save(userDto);
-
+            boolean y=true;
+            List<User> userList=userService.findAll();
+            for (int i=0;i<userList.size();i++){
+                if(userDto.getUserName().equals(userList.get(i).getUserName())){
+                    y=false;
+                    break;
+                }
+            }
+            if(y){
+                userService.save(userDto);
+            }else{
+                m.addAttribute("usernameWrong","This username is already exist");
+            }
         return "redirect:/";
+
     }
 
     @PostMapping(value = "/saveUser")
@@ -88,9 +99,11 @@ public class UserController {
     public String editUser(@Valid @ModelAttribute("user") UserDto userDto) {
         ModelMapper modelMapper=new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        User user= userService.findByUsername(userDto.getUserName());
+        userDto.setPassword(user.getPassword());
+        userDto.setAge(user.getAge());
+        userDto.setMomsSurname(user.getMomsSurname());
 
-        userDto.setUserId("5d31d4219d51690f50e70d19");
-        userDto.setUserName("enes25");
         userService.save(userDto);
 
         return "redirect:/";
@@ -225,18 +238,6 @@ public class UserController {
             return null;
         }
     }
-/*    @RequestMapping("/index")
-    public String showindex(Model model) {
-        logger.info("Getting All Users.");
-        model.addAttribute("userList", userService.findAll());
-        UserDto user = new UserDto();
-        user.setName("");
-        user.setSurname("");
-        user.setPhoneNumber("");
-        user.setUserName("");
-        model.addAttribute("user", user);
-        return "index";
-    }*/
 
     @PostMapping("/profile")
     public String profile(Model m) {

@@ -9,30 +9,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script async defer src="https://www.google.com/recaptcha/api.js"></script>
-    <script>
 
-        function validateForm() {
-            var recaptcha = document.forms["AddForm"]["g-recaptcha-response"].value;
-            if (recaptcha == "") {
-                alert("Please fill reCAPTCHA");
-                return false;
-            }
-        }
-
-        function validateForm1() {
-            var recaptcha = document.forms["EditForm"]["g-recaptcha-response"].value;
-            if (recaptcha == "") {
-                alert("Please fill reCAPTCHA");
-                return false;
-            }
-        }
-
-    </script>
 
 </head>
 <body background="user.jpg">
 <div class="container">
+
     <p  style="float:right;margin-top: 35px;font-size: 22px;" th:object="${loginAdmin}" th:text="'Admin Username: ' + ${loginAdmin.userName}"></p>
+    <p  id="usernameWrong" th:object="${usernameWrong}" th:text="${usernameWrong}"></p>
     <h1 style="margin-bottom: 35px;">Kullanıcı Listesi</h1>
     <div class="row col-md-9 table-responsive">
         <table class="table" id="user-table">
@@ -98,11 +82,11 @@
                                               role="form" th:action="@{/edit}" th:object="${user}">
                                             <div class="form-group">
                                                 <label >UserId</label>
-                                              <input class="form-control" readonly th:field="*{userName}" th:text="*{userId}" type="text"/>
+                                                <input class="form-control"  th:field="*{userId}" th:text="*{userId}" type="text"/>
                                             </div>
                                             <div class="form-group">
                                                 <label>Username</label>
-                                                <input class="form-control" readonly th:field="*{userName}" th:text="${user.userName}" type="text"/>
+                                                <input class="form-control"  th:field="*{userName}" th:text="${user.userName}" type="text"/>
                                             </div>
                                             <div class="form-group">
                                                 <label for="inputName">Name</label>
@@ -137,6 +121,7 @@
                                             </div>
 
                                         </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +148,7 @@
                     </div>
                     <div class="modal-body">
                         <p>Add New User</p>
-                        <form action="#" method="post" name="AddForm" onsubmit="return validateForm()" role="form"
+                        <form action="#" method="post" name="AddForm" role="form" onclick="func1()"
                               th:action="@{/save}" th:object="${user}">
 
                             <div class="form-group">
@@ -224,6 +209,26 @@
     function preventBack() { window.history.forward(); }
     setTimeout("preventBack()", 0);
     window.onunload = function () { null };
+</script>
+<script type="text/javascript">
+    var a = document.getElementById(usernameWrong).innerHTML;
+    alert(a);
+    function func1() {
+        var a = document.getElementById(usernameWrong).innerHTML;
+        alert(a);
+        if(a === "This username is already exist"){
+            alert("This username is already exist");
+        }
+
+    }
+    function validateForm1() {
+        var recaptcha = document.forms["EditForm"]["g-recaptcha-response"].value;
+        if (recaptcha == "") {
+            alert("Please fill reCAPTCHA");
+            return false;
+        }
+    }
+
 </script>
 </body>
 </html>
