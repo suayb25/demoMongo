@@ -51,7 +51,7 @@ public class TestMongo {
     public void test_Delete() {
 
         User user1 = new User();
-        user1.setUserId("5d317aa39d516912fc005f96");
+        user1.setUserId("5d3abbac9d516915f87d5286");
         if (userRepository.findAll() != null) {
             List<User> userList = userRepository.findAll();
             for (User user : userList) {
@@ -100,5 +100,4 @@ public class TestMongo {
             System.out.println("This user is not in the database");
         }
     }
-
 }

@@ -16,7 +16,7 @@
 <div class="container">
 
     <p  style="float:right;margin-top: 35px;font-size: 22px;" th:object="${loginAdmin}" th:text="'Admin Username: ' + ${loginAdmin.userName}"></p>
-    <p  id="usernameWrong" th:object="${usernameWrong}" th:text="${usernameWrong}"></p>
+    <!-- <p  id="usernameWrong" th:object="${usernameWrong}" th:text="${usernameWrong}"></p> -->
     <h1 style="margin-bottom: 35px;">Kullanıcı Listesi</h1>
     <div class="row col-md-9 table-responsive">
         <table class="table" id="user-table">
@@ -148,7 +148,7 @@
                     </div>
                     <div class="modal-body">
                         <p>Add New User</p>
-                        <form action="#" method="post" name="AddForm" role="form" onclick="func1()"
+                        <form action="#" method="post" name="AddForm" role="form"
                               th:action="@{/save}" th:object="${user}">
 
                             <div class="form-group">
@@ -211,8 +211,6 @@
     window.onunload = function () { null };
 </script>
 <script type="text/javascript">
-    var a = document.getElementById(usernameWrong).innerHTML;
-    alert(a);
     function func1() {
         var a = document.getElementById(usernameWrong).innerHTML;
         alert(a);

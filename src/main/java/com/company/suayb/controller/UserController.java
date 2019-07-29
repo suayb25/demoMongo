@@ -18,13 +18,12 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-
 import javax.validation.Valid;
 
 @Controller
 public class UserController {
-    final  String admin="admin";
-    final  String adminPassword="admin1234";
+   static final  String admin="admin";
+    static final  String adminPassword="admin1234";
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
@@ -65,10 +64,6 @@ public class UserController {
 
     @PostMapping(value = "/save")
     public String saveUser(@Valid @ModelAttribute("user") UserDto userDto,Model m) {
-    /*,@RequestParam(name = "g-recaptcha-response") String captchaResponse
-        String url = "https://www.google.com/recaptcha/api/siteverify";
-        String params = "?secret=6LdyJq4UAAAAALbJwOdZFSjDt7F4Yt-gsaTMo8t-&response=" + captchaResponse;
-        ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url + params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();*/
             boolean y=true;
             List<User> userList=userService.findAll();
             for (int i=0;i<userList.size();i++){
@@ -108,8 +103,6 @@ public class UserController {
 
         return "redirect:/";
     }
-
-
 
     @RequestMapping("/Delete/{id}")
     public void deleteStudent1(@PathVariable(name = "id") String id) {
@@ -161,8 +154,6 @@ public class UserController {
                 m.addAttribute("wrong","You have to register!");
                 return "homepage" ;
             }
-
-
         }else{
             boolean k=true;
             List<User> users = userService.findAll();
